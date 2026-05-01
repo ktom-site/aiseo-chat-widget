@@ -37,6 +37,13 @@ type BusinessForChat = {
         price: string;
         description?: string;
     }>;
+    /** Predefined issue tags shown in the booking flow. Grouped by service slug. */
+    bookingIssues?: Record<string, BookingIssue[]>;
+};
+/** A predefined issue tag within a service category */
+type BookingIssue = {
+    label: string;
+    serviceSlug?: string;
 };
 
 type CreateChatHandlerOpts = {

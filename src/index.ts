@@ -9,6 +9,11 @@ export type {
   WidgetMode,
   WidgetConfig,
   WidgetPosition,
+  WidgetBranding,
+  WidgetGreeting,
   LauncherSize,
+  BookingIssue,
+  BookingTimeSlot,
+  BookingData,
 } from './types';
 export { isAfterHours, greetingForTime } from './hours';
