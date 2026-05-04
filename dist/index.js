@@ -48,33 +48,33 @@ var WIDGET_STYLES = `
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.125rem;
-  padding: 0.5rem 1.125rem;
+  gap: 0.25rem;
+  padding: 0.875rem 1.625rem;
   background: var(--aiseo-cw-primary, #3b82f6);
   color: var(--aiseo-cw-primary-fg, #ffffff);
   border: none;
   cursor: pointer;
-  font-size: 0.6875rem;
+  font-size: 0.875rem;
   font-weight: 600;
   font-family: inherit;
   transition: filter 150ms;
   text-decoration: none;
 }
 .aiseo-cw-bar-tab:hover { filter: brightness(1.1); }
-.aiseo-cw-bar-tab svg { width: 1.25rem; height: 1.25rem; }
+.aiseo-cw-bar-tab svg { width: 1.625rem; height: 1.625rem; }
 .aiseo-cw-bar-tab--connect {
   background: var(--aiseo-cw-primary, #3b82f6);
   flex-direction: row;
-  gap: 0.375rem;
-  font-size: 0.8125rem;
-  padding: 0.5rem 1rem;
+  gap: 0.5rem;
+  font-size: 1rem;
+  padding: 0.875rem 1.5rem;
 }
-.aiseo-cw-bar-tab--connect svg { width: 1.375rem; height: 1.375rem; }
+.aiseo-cw-bar-tab--connect svg { width: 1.75rem; height: 1.75rem; }
 
 /* \u2500\u2500 Greeting Bubble \u2500\u2500 */
 .aiseo-cw-greeting {
   position: fixed;
-  bottom: 3.5rem;
+  bottom: 5rem;
   right: 0.75rem;
   z-index: 9998;
   background: #fff;
@@ -399,24 +399,95 @@ var WIDGET_STYLES = `
   40% { transform: translateY(-4px); opacity: 1; }
 }
 
-.aiseo-cw-quick {
+/* \u2500\u2500 Starter menu (first-turn intent buckets + topic chips) \u2500\u2500 */
+.aiseo-cw-starter {
   padding: 0 1rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+.aiseo-cw-starter-banner {
+  font-size: 0.8125rem;
+  color: #92400e;
+  background: #fef3c7;
+  border: 1px solid #fcd34d;
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  line-height: 1.35;
+}
+.aiseo-cw-starter-intents {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.aiseo-cw-starter-intent {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.625rem 0.875rem;
+  border-radius: 0.625rem;
+  border: 1.5px solid #e2e8f0;
+  background: #fff;
+  color: #0f172a;
+  font-size: 0.875rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: left;
+  transition: all 180ms ease;
+}
+.aiseo-cw-starter-intent:hover {
+  border-color: var(--aiseo-cw-primary, #3b82f6);
+  background: #f8fbff;
+}
+.aiseo-cw-starter-intent svg { width: 1.125rem; height: 1.125rem; flex-shrink: 0; color: var(--aiseo-cw-primary, #3b82f6); }
+.aiseo-cw-starter-intent-label { flex: 1; }
+.aiseo-cw-starter-intent-chevron { color: #94a3b8; width: 1rem; height: 1rem; flex-shrink: 0; }
+.aiseo-cw-starter-intent--emergency {
+  border-color: #fecaca;
+  background: #fef2f2;
+  color: #991b1b;
+}
+.aiseo-cw-starter-intent--emergency:hover {
+  border-color: #ef4444;
+  background: #fee2e2;
+}
+.aiseo-cw-starter-intent--emergency svg,
+.aiseo-cw-starter-intent--emergency .aiseo-cw-starter-intent-chevron { color: #dc2626; }
+
+.aiseo-cw-starter-divider {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0.25rem 0 0;
+}
+.aiseo-cw-starter-topics {
   display: flex;
   flex-wrap: wrap;
   gap: 0.375rem;
 }
-.aiseo-cw-quick button {
-  font-size: 0.75rem;
+.aiseo-cw-starter-topic {
   padding: 0.375rem 0.75rem;
   border-radius: 9999px;
-  border: 1px solid #cbd5e1;
+  border: 1.5px solid #e2e8f0;
   background: #fff;
-  color: #1e293b;
-  cursor: pointer;
+  color: #334155;
+  font-size: 0.75rem;
+  font-weight: 500;
   font-family: inherit;
-  transition: background 120ms;
+  cursor: pointer;
+  transition: all 180ms ease;
 }
-.aiseo-cw-quick button:hover { background: #f1f5f9; }
+.aiseo-cw-starter-topic:hover {
+  border-color: #93c5fd;
+  background: #f0f7ff;
+  color: #1e40af;
+}
 
 .aiseo-cw-actions {
   display: flex;
@@ -558,7 +629,7 @@ var WIDGET_STYLES = `
   align-items: center;
   gap: 0.75rem;
   padding: 0.75rem 1rem;
-  background: var(--aiseo-cw-primary, #3b82f6);
+  background: linear-gradient(135deg, var(--aiseo-cw-primary, #3b82f6), color-mix(in srgb, var(--aiseo-cw-primary, #3b82f6) 85%, #000));
   color: var(--aiseo-cw-primary-fg, #ffffff);
 }
 .aiseo-cw-booking-logo {
@@ -595,8 +666,8 @@ var WIDGET_STYLES = `
   align-items: center;
   gap: 0.5rem;
   padding: 0.625rem 1rem;
-  background: #fff;
-  border-bottom: 1px solid #f1f5f9;
+  background: #fafbff;
+  border-bottom: 1px solid #eef2f7;
 }
 .aiseo-cw-booking-progress-back {
   background: none;
@@ -651,26 +722,29 @@ var WIDGET_STYLES = `
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.25rem;
-  padding: 0.625rem 0.75rem;
+  gap: 0.375rem;
+  padding: 0.75rem 0.75rem;
   min-width: 5rem;
-  border: 2px solid #e2e8f0;
-  border-radius: 0.5rem;
-  background: #fff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 0.75rem;
+  background: #f8fafc;
   color: #475569;
   font-size: 0.6875rem;
   font-weight: 600;
   cursor: pointer;
   font-family: inherit;
-  transition: border-color 150ms, background 150ms;
+  transition: all 200ms ease;
   flex-shrink: 0;
 }
-.aiseo-cw-booking-service svg { width: 1.75rem; height: 1.75rem; color: var(--aiseo-cw-primary, #3b82f6); }
+.aiseo-cw-booking-service svg { width: 1.75rem; height: 1.75rem; color: #60a5fa; transition: color 200ms; }
 .aiseo-cw-booking-service.active {
   border-color: var(--aiseo-cw-primary, #3b82f6);
   background: #eff6ff;
+  color: var(--aiseo-cw-primary, #3b82f6);
+  box-shadow: 0 0 0 1px var(--aiseo-cw-primary, #3b82f6);
 }
-.aiseo-cw-booking-service:hover { border-color: var(--aiseo-cw-primary, #3b82f6); }
+.aiseo-cw-booking-service.active svg { color: var(--aiseo-cw-primary, #3b82f6); }
+.aiseo-cw-booking-service:hover { border-color: #93c5fd; background: #f0f7ff; }
 
 /* Step title */
 .aiseo-cw-booking-step-title {
@@ -687,25 +761,27 @@ var WIDGET_STYLES = `
   gap: 0.5rem;
 }
 .aiseo-cw-booking-tag {
-  padding: 0.5rem 0.875rem;
-  border-radius: 0.375rem;
-  border: 1px solid #e2e8f0;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  border: 1.5px solid #e2e8f0;
   background: #fff;
   color: #334155;
   font-size: 0.8125rem;
   font-weight: 500;
   cursor: pointer;
   font-family: inherit;
-  transition: all 150ms;
+  transition: all 200ms ease;
 }
 .aiseo-cw-booking-tag:hover {
-  border-color: var(--aiseo-cw-primary, #3b82f6);
-  background: #eff6ff;
+  border-color: #93c5fd;
+  background: #f0f7ff;
+  color: #1e40af;
 }
 .aiseo-cw-booking-tag.active {
   border-color: var(--aiseo-cw-primary, #3b82f6);
   background: var(--aiseo-cw-primary, #3b82f6);
   color: var(--aiseo-cw-primary-fg, #ffffff);
+  box-shadow: 0 2px 8px rgba(59,130,246,0.25);
 }
 
 /* Summary chip */
@@ -883,18 +959,19 @@ var WIDGET_STYLES = `
 .aiseo-cw-booking-emergency:hover { opacity: 0.8; }
 .aiseo-cw-booking-continue {
   padding: 0.625rem 1.5rem;
-  background: var(--aiseo-cw-primary, #3b82f6);
-  color: var(--aiseo-cw-primary-fg, #ffffff);
+  background: var(--aiseo-cw-accent, var(--aiseo-cw-primary, #3b82f6));
+  color: var(--aiseo-cw-accent-fg, var(--aiseo-cw-primary-fg, #ffffff));
   border: none;
-  border-radius: 0.375rem;
+  border-radius: 0.5rem;
   font-size: 0.875rem;
   font-weight: 700;
   cursor: pointer;
   font-family: inherit;
-  transition: filter 150ms;
+  transition: filter 150ms, box-shadow 150ms;
+  box-shadow: 0 2px 8px rgba(245,158,11,0.3);
 }
-.aiseo-cw-booking-continue:hover { filter: brightness(1.08); }
-.aiseo-cw-booking-continue:disabled { opacity: 0.4; cursor: not-allowed; }
+.aiseo-cw-booking-continue:hover { filter: brightness(1.08); box-shadow: 0 4px 12px rgba(245,158,11,0.35); }
+.aiseo-cw-booking-continue:disabled { opacity: 0.4; cursor: not-allowed; box-shadow: none; }
 `.trim();
 
 // src/ChatWidget.tsx
@@ -909,6 +986,8 @@ var AiIcon = () => /* @__PURE__ */ jsxs("svg", { viewBox: "0 0 24 24", fill: "cu
 var CloseIcon = () => /* @__PURE__ */ jsx("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2.5", children: /* @__PURE__ */ jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", d: "M6 18L18 6M6 6l12 12" }) });
 var SendIcon = () => /* @__PURE__ */ jsx("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", children: /* @__PURE__ */ jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", d: "M12 19l9 2-9-18-9 18 9-2zm0 0v-8" }) });
 var BoltIcon = () => /* @__PURE__ */ jsx("svg", { viewBox: "0 0 20 20", fill: "currentColor", children: /* @__PURE__ */ jsx("path", { fillRule: "evenodd", d: "M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z", clipRule: "evenodd" }) });
+var ChevronRightIcon = () => /* @__PURE__ */ jsx("svg", { className: "aiseo-cw-starter-intent-chevron", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", children: /* @__PURE__ */ jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", d: "M9 5l7 7-7 7" }) });
+var AlertIcon = () => /* @__PURE__ */ jsx("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", children: /* @__PURE__ */ jsx("path", { strokeLinecap: "round", strokeLinejoin: "round", d: "M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.732 0 2.815-1.874 1.95-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" }) });
 var CalendarIcon = () => /* @__PURE__ */ jsxs("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", children: [
   /* @__PURE__ */ jsx("rect", { x: "3", y: "4", width: "18", height: "18", rx: "2", ry: "2" }),
   /* @__PURE__ */ jsx("line", { x1: "16", y1: "2", x2: "16", y2: "6" }),
@@ -1024,12 +1103,13 @@ function ChatWidget({
     () => [{ role: "assistant", content: greetingText }],
     [greetingText]
   );
-  const quickReplies = useMemo(() => {
-    const base = ["What services do you offer?", "How much for a panel upgrade?"];
-    if (business.contact.emergencyAvailable) base.push("I have an emergency");
-    base.push("Schedule a free estimate");
-    return base;
-  }, [business.contact.emergencyAvailable]);
+  const topicChips = useMemo(
+    () => (business.services ?? []).map((s) => ({
+      label: s.shortTitle ?? s.title,
+      prompt: `Tell me about your ${s.shortTitle ?? s.title} services`
+    })),
+    [business.services]
+  );
   const [panelOpen, setPanelOpen] = useState(false);
   const [view, setView] = useState("home");
   const [messages, setMessages] = useState(initialMessages);
@@ -1215,11 +1295,14 @@ function ChatWidget({
           {
             messages,
             sending,
-            quickReplies: messages.length === 1 ? quickReplies : [],
-            onQuick: (q) => {
-              if (q === "Schedule a free estimate") setView("capture");
-              else send(q);
-            },
+            showStarter: messages.length === 1,
+            afterHours,
+            emergencyAvailable: business.contact.emergencyAvailable === true,
+            phoneTel: business.contact.phoneTel,
+            topicChips,
+            onBook: () => setView("booking"),
+            onQuote: () => setView("capture"),
+            onTopic: (prompt) => send(prompt),
             bottomRef
           }
         ),
@@ -1283,8 +1366,14 @@ function ChatWidget({
 function ChatBody({
   messages,
   sending,
-  quickReplies,
-  onQuick,
+  showStarter,
+  afterHours,
+  emergencyAvailable,
+  phoneTel,
+  topicChips,
+  onBook,
+  onQuote,
+  onTopic,
   bottomRef
 }) {
   return /* @__PURE__ */ jsxs(Fragment, { children: [
@@ -1297,7 +1386,46 @@ function ChatBody({
       ] }) }) }),
       /* @__PURE__ */ jsx("div", { ref: bottomRef })
     ] }),
-    quickReplies.length > 0 && /* @__PURE__ */ jsx("div", { className: "aiseo-cw-quick", children: quickReplies.map((q) => /* @__PURE__ */ jsx("button", { type: "button", onClick: () => onQuick(q), children: q }, q)) })
+    showStarter && /* @__PURE__ */ jsxs("div", { className: "aiseo-cw-starter", children: [
+      afterHours && /* @__PURE__ */ jsx("p", { className: "aiseo-cw-starter-banner", children: "We're closed right now \u2014 leave your details and we'll reach out first thing." }),
+      /* @__PURE__ */ jsxs("div", { className: "aiseo-cw-starter-intents", children: [
+        emergencyAvailable && /* @__PURE__ */ jsxs(
+          "a",
+          {
+            className: "aiseo-cw-starter-intent aiseo-cw-starter-intent--emergency",
+            href: `tel:${phoneTel}`,
+            children: [
+              /* @__PURE__ */ jsx(AlertIcon, {}),
+              /* @__PURE__ */ jsx("span", { className: "aiseo-cw-starter-intent-label", children: "I have an emergency" }),
+              /* @__PURE__ */ jsx(ChevronRightIcon, {})
+            ]
+          }
+        ),
+        /* @__PURE__ */ jsxs("button", { type: "button", className: "aiseo-cw-starter-intent", onClick: onBook, children: [
+          /* @__PURE__ */ jsx(CalendarIcon, {}),
+          /* @__PURE__ */ jsx("span", { className: "aiseo-cw-starter-intent-label", children: "Book a service visit" }),
+          /* @__PURE__ */ jsx(ChevronRightIcon, {})
+        ] }),
+        /* @__PURE__ */ jsxs("button", { type: "button", className: "aiseo-cw-starter-intent", onClick: onQuote, children: [
+          /* @__PURE__ */ jsx(ChatIcon, {}),
+          /* @__PURE__ */ jsx("span", { className: "aiseo-cw-starter-intent-label", children: "Get a quote" }),
+          /* @__PURE__ */ jsx(ChevronRightIcon, {})
+        ] })
+      ] }),
+      topicChips.length > 0 && /* @__PURE__ */ jsxs(Fragment, { children: [
+        /* @__PURE__ */ jsx("div", { className: "aiseo-cw-starter-divider", children: "Or ask about" }),
+        /* @__PURE__ */ jsx("div", { className: "aiseo-cw-starter-topics", children: topicChips.map((c) => /* @__PURE__ */ jsx(
+          "button",
+          {
+            type: "button",
+            className: "aiseo-cw-starter-topic",
+            onClick: () => onTopic(c.prompt),
+            children: c.label
+          },
+          c.label
+        )) })
+      ] })
+    ] })
   ] });
 }
 function CaptureForm({

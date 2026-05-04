@@ -56,6 +56,16 @@ const BoltIcon = () => (
     <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
   </svg>
 );
+const ChevronRightIcon = () => (
+  <svg className="aiseo-cw-starter-intent-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+  </svg>
+);
+const AlertIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.732 0 2.815-1.874 1.95-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+  </svg>
+);
 
 type PanelView = 'home' | 'chat' | 'capture' | 'submitted' | 'booking';
 
@@ -203,12 +213,13 @@ export function ChatWidget({
     [greetingText]
   );
 
-  const quickReplies = useMemo(() => {
-    const base = ['What services do you offer?', 'How much for a panel upgrade?'];
-    if (business.contact.emergencyAvailable) base.push('I have an emergency');
-    base.push('Schedule a free estimate');
-    return base;
-  }, [business.contact.emergencyAvailable]);
+  const topicChips = useMemo(
+    () => (business.services ?? []).map((s) => ({
+      label: s.shortTitle ?? s.title,
+      prompt: `Tell me about your ${s.shortTitle ?? s.title} services`,
+    })),
+    [business.services]
+  );
 
   const [panelOpen, setPanelOpen] = useState(false);
   const [view, setView] = useState<PanelView>('home');
@@ -441,11 +452,14 @@ export function ChatWidget({
               <ChatBody
                 messages={messages}
                 sending={sending}
-                quickReplies={messages.length === 1 ? quickReplies : []}
-                onQuick={(q) => {
-                  if (q === 'Schedule a free estimate') setView('capture');
-                  else send(q);
-                }}
+                showStarter={messages.length === 1}
+                afterHours={afterHours}
+                emergencyAvailable={business.contact.emergencyAvailable === true}
+                phoneTel={business.contact.phoneTel}
+                topicChips={topicChips}
+                onBook={() => setView('booking')}
+                onQuote={() => setView('capture')}
+                onTopic={(prompt) => send(prompt)}
                 bottomRef={bottomRef}
               />
 
@@ -517,14 +531,26 @@ export function ChatWidget({
 function ChatBody({
   messages,
   sending,
-  quickReplies,
-  onQuick,
+  showStarter,
+  afterHours,
+  emergencyAvailable,
+  phoneTel,
+  topicChips,
+  onBook,
+  onQuote,
+  onTopic,
   bottomRef,
 }: {
   messages: ChatMessage[];
   sending: boolean;
-  quickReplies: string[];
-  onQuick: (q: string) => void;
+  showStarter: boolean;
+  afterHours: boolean;
+  emergencyAvailable: boolean;
+  phoneTel: string;
+  topicChips: { label: string; prompt: string }[];
+  onBook: () => void;
+  onQuote: () => void;
+  onTopic: (prompt: string) => void;
   bottomRef: React.RefObject<HTMLDivElement | null>;
 }) {
   return (
@@ -544,11 +570,52 @@ function ChatBody({
         )}
         <div ref={bottomRef} />
       </div>
-      {quickReplies.length > 0 && (
-        <div className="aiseo-cw-quick">
-          {quickReplies.map((q) => (
-            <button key={q} type="button" onClick={() => onQuick(q)}>{q}</button>
-          ))}
+      {showStarter && (
+        <div className="aiseo-cw-starter">
+          {afterHours && (
+            <p className="aiseo-cw-starter-banner">
+              We&apos;re closed right now — leave your details and we&apos;ll reach out first thing.
+            </p>
+          )}
+          <div className="aiseo-cw-starter-intents">
+            {emergencyAvailable && (
+              <a
+                className="aiseo-cw-starter-intent aiseo-cw-starter-intent--emergency"
+                href={`tel:${phoneTel}`}
+              >
+                <AlertIcon />
+                <span className="aiseo-cw-starter-intent-label">I have an emergency</span>
+                <ChevronRightIcon />
+              </a>
+            )}
+            <button type="button" className="aiseo-cw-starter-intent" onClick={onBook}>
+              <CalendarIcon />
+              <span className="aiseo-cw-starter-intent-label">Book a service visit</span>
+              <ChevronRightIcon />
+            </button>
+            <button type="button" className="aiseo-cw-starter-intent" onClick={onQuote}>
+              <ChatIcon />
+              <span className="aiseo-cw-starter-intent-label">Get a quote</span>
+              <ChevronRightIcon />
+            </button>
+          </div>
+          {topicChips.length > 0 && (
+            <>
+              <div className="aiseo-cw-starter-divider">Or ask about</div>
+              <div className="aiseo-cw-starter-topics">
+                {topicChips.map((c) => (
+                  <button
+                    key={c.label}
+                    type="button"
+                    className="aiseo-cw-starter-topic"
+                    onClick={() => onTopic(c.prompt)}
+                  >
+                    {c.label}
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
         </div>
       )}
     </>
