@@ -194,7 +194,7 @@ export function ChatWidget({
     primaryFg = '#ffffff',
     accentColor,
     launcherColor,
-    launcherRing = 'rgba(255,255,255,0.95)',
+    launcherRing = '#334155',
   } = branding;
 
   const derivedSecondary = secondaryColor || darkenHex(primaryColor, 0.35);

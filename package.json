@@ -1,6 +1,6 @@
 {
   "name": "@aiseo/chat-widget",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Reusable hybrid (AI + lead-capture) chat widget for electrician customer sites.",
   "license": "UNLICENSED",
   "private": false,

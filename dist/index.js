@@ -41,8 +41,8 @@ var WIDGET_STYLES = `
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   border-top-left-radius: 0.5rem;
   overflow: hidden;
-  /* contrast halo + drop shadow so the bar pops on any background */
-  box-shadow: 0 0 0 2px var(--aiseo-cw-launcher-ring, rgba(255,255,255,0.9)), -4px -4px 18px rgba(0,0,0,0.22);
+  /* dark slate ring + drop shadow for contrast against any bg (incl. white) */
+  box-shadow: 0 0 0 1.5px var(--aiseo-cw-launcher-ring, #334155), -4px -4px 18px rgba(15,23,42,0.28);
 }
 .aiseo-cw-bar-tab {
   display: flex;
@@ -88,8 +88,8 @@ var WIDGET_STYLES = `
   color: var(--aiseo-cw-launcher-fg, var(--aiseo-cw-primary-fg, #ffffff));
   align-items: center;
   justify-content: center;
-  /* halo ring for contrast against any site bg + drop shadow */
-  box-shadow: 0 0 0 3px var(--aiseo-cw-launcher-ring, rgba(255,255,255,0.95)), 0 8px 20px rgba(0,0,0,0.28);
+  /* dark slate ring for contrast against any site bg + drop shadow */
+  box-shadow: 0 0 0 2px var(--aiseo-cw-launcher-ring, #334155), 0 8px 20px rgba(15,23,42,0.32);
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   transition: transform 150ms, filter 150ms;
 }
@@ -103,7 +103,7 @@ var WIDGET_STYLES = `
   height: 0.625rem;
   border-radius: 9999px;
   background: #ef4444;
-  border: 2px solid #fff;
+  border: 1.5px solid #334155;
 }
 @media (max-width: 480px) {
   .aiseo-cw-bar { display: none; }
@@ -118,11 +118,11 @@ var WIDGET_STYLES = `
   right: 0.75rem;
   z-index: 9998;
   background: #fff;
-  border: 2px solid var(--aiseo-cw-primary, #3b82f6);
+  border: 1.5px solid #334155;
   border-radius: 0.75rem;
   padding: 0.75rem 1rem;
   max-width: 22rem;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  box-shadow: 0 8px 24px rgba(15,23,42,0.18);
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   animation: aiseoCwFadeUp 400ms ease-out;
 }
@@ -134,8 +134,8 @@ var WIDGET_STYLES = `
   width: 14px;
   height: 14px;
   background: #fff;
-  border-right: 2px solid var(--aiseo-cw-primary, #3b82f6);
-  border-bottom: 2px solid var(--aiseo-cw-primary, #3b82f6);
+  border-right: 1.5px solid #334155;
+  border-bottom: 1.5px solid #334155;
   transform: rotate(45deg);
 }
 .aiseo-cw-greeting-title {
@@ -180,7 +180,9 @@ var WIDGET_STYLES = `
   max-height: 100dvh;
   background: #f8fafc;
   border-top-left-radius: 1rem;
-  box-shadow: -4px -2px 30px rgba(0,0,0,0.2);
+  border: 1px solid #334155;
+  border-bottom: none;
+  box-shadow: -4px -2px 30px rgba(15,23,42,0.28);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -1132,7 +1134,7 @@ function ChatWidget({
     primaryFg = "#ffffff",
     accentColor,
     launcherColor,
-    launcherRing = "rgba(255,255,255,0.95)"
+    launcherRing = "#334155"
   } = branding;
   const derivedSecondary = secondaryColor || darkenHex(primaryColor, 0.35);
   const derivedAccent = accentColor || primaryColor;
