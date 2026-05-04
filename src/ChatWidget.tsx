@@ -193,10 +193,15 @@ export function ChatWidget({
     secondaryColor,
     primaryFg = '#ffffff',
     accentColor,
+    launcherColor,
+    launcherRing = 'rgba(255,255,255,0.95)',
   } = branding;
 
   const derivedSecondary = secondaryColor || darkenHex(primaryColor, 0.35);
   const derivedAccent = accentColor || primaryColor;
+  // Ensure launcher has enough contrast on light/white site backgrounds.
+  // If the primary color is too light (luminance > 0.55), darken it for the launcher.
+  const derivedLauncher = launcherColor || (luminance(primaryColor) > 0.55 ? darkenHex(primaryColor, 0.4) : primaryColor);
 
   const afterHours = useMemo(
     () => isAfterHours(business.contact.hoursStructured),
@@ -304,6 +309,9 @@ export function ChatWidget({
     '--aiseo-cw-primary-fg': primaryFg,
     '--aiseo-cw-secondary': derivedSecondary,
     '--aiseo-cw-accent': derivedAccent,
+    '--aiseo-cw-launcher': derivedLauncher,
+    '--aiseo-cw-launcher-fg': primaryFg,
+    '--aiseo-cw-launcher-ring': launcherRing,
     '--aiseo-cw-panel-width': `${panelWidth}rem`,
   } as React.CSSProperties;
 
@@ -325,7 +333,7 @@ export function ChatWidget({
             </div>
           )}
 
-          {/* Bottom bar */}
+          {/* Bottom bar (desktop) */}
           <div className="aiseo-cw-bar">
             <button className="aiseo-cw-bar-tab aiseo-cw-bar-tab--connect" onClick={() => openPanel('home')}>
               <AiIcon />
@@ -344,6 +352,16 @@ export function ChatWidget({
               Chat
             </button>
           </div>
+
+          {/* Floating launcher button (mobile) */}
+          <button
+            className="aiseo-cw-fab"
+            onClick={() => openPanel('home')}
+            aria-label={`Chat with ${business.name}`}
+          >
+            <ChatIcon />
+            <span className="aiseo-cw-fab-dot" aria-hidden="true" />
+          </button>
         </>
       )}
 
@@ -1107,4 +1125,18 @@ function darkenHex(hex: string, factor: number): string {
   const g = Math.max(0, Math.round(parseInt(h.slice(2, 4), 16) * (1 - factor)));
   const b = Math.max(0, Math.round(parseInt(h.slice(4, 6), 16) * (1 - factor)));
   return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+}
+
+/** Relative luminance (0–1) of a hex color, per WCAG sRGB approximation. */
+function luminance(hex: string): number {
+  const h = hex.replace('#', '');
+  if (h.length < 6) return 0.5;
+  const toLin = (c: number) => {
+    const s = c / 255;
+    return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
+  };
+  const r = toLin(parseInt(h.slice(0, 2), 16));
+  const g = toLin(parseInt(h.slice(2, 4), 16));
+  const b = toLin(parseInt(h.slice(4, 6), 16));
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
 }

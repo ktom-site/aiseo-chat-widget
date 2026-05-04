@@ -101,6 +101,10 @@ export type WidgetBranding = {
   primaryFg?: string;
   /** Accent color for highlights (AI badge, links). Defaults to primaryColor. */
   accentColor?: string;
+  /** Color of the launcher (bottom bar / mobile bubble). Auto-derived from primaryColor with luminance contrast for any site bg. Override to force a specific shade. */
+  launcherColor?: string;
+  /** Ring/halo color around the launcher to ensure contrast. Defaults to white. */
+  launcherRing?: string;
 };
 
 /** A greeting bubble shown above the bottom bar when collapsed */

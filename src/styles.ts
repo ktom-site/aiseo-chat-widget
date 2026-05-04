@@ -3,7 +3,7 @@ export const WIDGET_STYLES = `
    AISEO Chat Widget — Scorpion-style layout
    ═══════════════════════════════════════════ */
 
-/* ── Bottom Bar (collapsed state) ── */
+/* ── Bottom Bar (collapsed state, desktop) ── */
 .aiseo-cw-bar {
   position: fixed;
   bottom: 0;
@@ -13,7 +13,8 @@ export const WIDGET_STYLES = `
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   border-top-left-radius: 0.5rem;
   overflow: hidden;
-  box-shadow: -2px -2px 12px rgba(0,0,0,0.15);
+  /* contrast halo + drop shadow so the bar pops on any background */
+  box-shadow: 0 0 0 2px var(--aiseo-cw-launcher-ring, rgba(255,255,255,0.9)), -4px -4px 18px rgba(0,0,0,0.22);
 }
 .aiseo-cw-bar-tab {
   display: flex;
@@ -22,8 +23,8 @@ export const WIDGET_STYLES = `
   justify-content: center;
   gap: 0.25rem;
   padding: 0.875rem 1.625rem;
-  background: var(--aiseo-cw-primary, #3b82f6);
-  color: var(--aiseo-cw-primary-fg, #ffffff);
+  background: var(--aiseo-cw-launcher, var(--aiseo-cw-primary, #3b82f6));
+  color: var(--aiseo-cw-launcher-fg, var(--aiseo-cw-primary-fg, #ffffff));
   border: none;
   cursor: pointer;
   font-size: 0.875rem;
@@ -35,13 +36,52 @@ export const WIDGET_STYLES = `
 .aiseo-cw-bar-tab:hover { filter: brightness(1.1); }
 .aiseo-cw-bar-tab svg { width: 1.625rem; height: 1.625rem; }
 .aiseo-cw-bar-tab--connect {
-  background: var(--aiseo-cw-primary, #3b82f6);
+  background: var(--aiseo-cw-launcher, var(--aiseo-cw-primary, #3b82f6));
   flex-direction: row;
   gap: 0.5rem;
   font-size: 1rem;
   padding: 0.875rem 1.5rem;
 }
 .aiseo-cw-bar-tab--connect svg { width: 1.75rem; height: 1.75rem; }
+
+/* ── Mobile floating launcher button (collapsed state, < 480px) ── */
+.aiseo-cw-fab {
+  display: none;
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 9999;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 9999px;
+  border: none;
+  cursor: pointer;
+  background: var(--aiseo-cw-launcher, var(--aiseo-cw-primary, #3b82f6));
+  color: var(--aiseo-cw-launcher-fg, var(--aiseo-cw-primary-fg, #ffffff));
+  align-items: center;
+  justify-content: center;
+  /* halo ring for contrast against any site bg + drop shadow */
+  box-shadow: 0 0 0 3px var(--aiseo-cw-launcher-ring, rgba(255,255,255,0.95)), 0 8px 20px rgba(0,0,0,0.28);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  transition: transform 150ms, filter 150ms;
+}
+.aiseo-cw-fab:hover { filter: brightness(1.08); transform: translateY(-1px); }
+.aiseo-cw-fab svg { width: 1.75rem; height: 1.75rem; }
+.aiseo-cw-fab-dot {
+  position: absolute;
+  top: 0.25rem;
+  right: 0.25rem;
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 9999px;
+  background: #ef4444;
+  border: 2px solid #fff;
+}
+@media (max-width: 480px) {
+  .aiseo-cw-bar { display: none; }
+  .aiseo-cw-fab { display: inline-flex; }
+  .aiseo-cw-greeting { bottom: 5.5rem; right: 1rem; max-width: calc(100vw - 2rem); }
+}
 
 /* ── Greeting Bubble ── */
 .aiseo-cw-greeting {

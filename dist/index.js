@@ -31,7 +31,7 @@ var WIDGET_STYLES = `
    AISEO Chat Widget \u2014 Scorpion-style layout
    \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 */
 
-/* \u2500\u2500 Bottom Bar (collapsed state) \u2500\u2500 */
+/* \u2500\u2500 Bottom Bar (collapsed state, desktop) \u2500\u2500 */
 .aiseo-cw-bar {
   position: fixed;
   bottom: 0;
@@ -41,7 +41,8 @@ var WIDGET_STYLES = `
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   border-top-left-radius: 0.5rem;
   overflow: hidden;
-  box-shadow: -2px -2px 12px rgba(0,0,0,0.15);
+  /* contrast halo + drop shadow so the bar pops on any background */
+  box-shadow: 0 0 0 2px var(--aiseo-cw-launcher-ring, rgba(255,255,255,0.9)), -4px -4px 18px rgba(0,0,0,0.22);
 }
 .aiseo-cw-bar-tab {
   display: flex;
@@ -50,8 +51,8 @@ var WIDGET_STYLES = `
   justify-content: center;
   gap: 0.25rem;
   padding: 0.875rem 1.625rem;
-  background: var(--aiseo-cw-primary, #3b82f6);
-  color: var(--aiseo-cw-primary-fg, #ffffff);
+  background: var(--aiseo-cw-launcher, var(--aiseo-cw-primary, #3b82f6));
+  color: var(--aiseo-cw-launcher-fg, var(--aiseo-cw-primary-fg, #ffffff));
   border: none;
   cursor: pointer;
   font-size: 0.875rem;
@@ -63,13 +64,52 @@ var WIDGET_STYLES = `
 .aiseo-cw-bar-tab:hover { filter: brightness(1.1); }
 .aiseo-cw-bar-tab svg { width: 1.625rem; height: 1.625rem; }
 .aiseo-cw-bar-tab--connect {
-  background: var(--aiseo-cw-primary, #3b82f6);
+  background: var(--aiseo-cw-launcher, var(--aiseo-cw-primary, #3b82f6));
   flex-direction: row;
   gap: 0.5rem;
   font-size: 1rem;
   padding: 0.875rem 1.5rem;
 }
 .aiseo-cw-bar-tab--connect svg { width: 1.75rem; height: 1.75rem; }
+
+/* \u2500\u2500 Mobile floating launcher button (collapsed state, < 480px) \u2500\u2500 */
+.aiseo-cw-fab {
+  display: none;
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 9999;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 9999px;
+  border: none;
+  cursor: pointer;
+  background: var(--aiseo-cw-launcher, var(--aiseo-cw-primary, #3b82f6));
+  color: var(--aiseo-cw-launcher-fg, var(--aiseo-cw-primary-fg, #ffffff));
+  align-items: center;
+  justify-content: center;
+  /* halo ring for contrast against any site bg + drop shadow */
+  box-shadow: 0 0 0 3px var(--aiseo-cw-launcher-ring, rgba(255,255,255,0.95)), 0 8px 20px rgba(0,0,0,0.28);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  transition: transform 150ms, filter 150ms;
+}
+.aiseo-cw-fab:hover { filter: brightness(1.08); transform: translateY(-1px); }
+.aiseo-cw-fab svg { width: 1.75rem; height: 1.75rem; }
+.aiseo-cw-fab-dot {
+  position: absolute;
+  top: 0.25rem;
+  right: 0.25rem;
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 9999px;
+  background: #ef4444;
+  border: 2px solid #fff;
+}
+@media (max-width: 480px) {
+  .aiseo-cw-bar { display: none; }
+  .aiseo-cw-fab { display: inline-flex; }
+  .aiseo-cw-greeting { bottom: 5.5rem; right: 1rem; max-width: calc(100vw - 2rem); }
+}
 
 /* \u2500\u2500 Greeting Bubble \u2500\u2500 */
 .aiseo-cw-greeting {
@@ -1090,10 +1130,13 @@ function ChatWidget({
     primaryColor = "#3b82f6",
     secondaryColor,
     primaryFg = "#ffffff",
-    accentColor
+    accentColor,
+    launcherColor,
+    launcherRing = "rgba(255,255,255,0.95)"
   } = branding;
   const derivedSecondary = secondaryColor || darkenHex(primaryColor, 0.35);
   const derivedAccent = accentColor || primaryColor;
+  const derivedLauncher = launcherColor || (luminance(primaryColor) > 0.55 ? darkenHex(primaryColor, 0.4) : primaryColor);
   const afterHours = useMemo(
     () => isAfterHours(business.contact.hoursStructured),
     [business.contact.hoursStructured]
@@ -1187,6 +1230,9 @@ function ChatWidget({
     "--aiseo-cw-primary-fg": primaryFg,
     "--aiseo-cw-secondary": derivedSecondary,
     "--aiseo-cw-accent": derivedAccent,
+    "--aiseo-cw-launcher": derivedLauncher,
+    "--aiseo-cw-launcher-fg": primaryFg,
+    "--aiseo-cw-launcher-ring": launcherRing,
     "--aiseo-cw-panel-width": `${panelWidth}rem`
   };
   return /* @__PURE__ */ jsxs("div", { style: cssVars, children: [
@@ -1214,7 +1260,19 @@ function ChatWidget({
           /* @__PURE__ */ jsx(ChatIcon, {}),
           "Chat"
         ] })
-      ] })
+      ] }),
+      /* @__PURE__ */ jsxs(
+        "button",
+        {
+          className: "aiseo-cw-fab",
+          onClick: () => openPanel("home"),
+          "aria-label": `Chat with ${business.name}`,
+          children: [
+            /* @__PURE__ */ jsx(ChatIcon, {}),
+            /* @__PURE__ */ jsx("span", { className: "aiseo-cw-fab-dot", "aria-hidden": "true" })
+          ]
+        }
+      )
     ] }),
     panelOpen && /* @__PURE__ */ jsxs("div", { className: "aiseo-cw-panel", role: "dialog", "aria-label": `${business.name} chat`, children: [
       /* @__PURE__ */ jsxs("div", { className: "aiseo-cw-panel-header", children: [
@@ -1813,6 +1871,18 @@ function darkenHex(hex, factor) {
   const g = Math.max(0, Math.round(parseInt(h.slice(2, 4), 16) * (1 - factor)));
   const b = Math.max(0, Math.round(parseInt(h.slice(4, 6), 16) * (1 - factor)));
   return `#${r.toString(16).padStart(2, "0")}${g.toString(16).padStart(2, "0")}${b.toString(16).padStart(2, "0")}`;
+}
+function luminance(hex) {
+  const h = hex.replace("#", "");
+  if (h.length < 6) return 0.5;
+  const toLin = (c) => {
+    const s = c / 255;
+    return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
+  };
+  const r = toLin(parseInt(h.slice(0, 2), 16));
+  const g = toLin(parseInt(h.slice(2, 4), 16));
+  const b = toLin(parseInt(h.slice(4, 6), 16));
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
 }
 export {
   ChatWidget,
